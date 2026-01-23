@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useAddress } from '@/composables/useAddress';
 import AuthBase from '@/layouts/AuthLayout.vue';
+import { login } from '@/routes';
 import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, Link } from '@inertiajs/vue3';
 import { File } from 'lucide-vue-next';
 import { computed, nextTick, reactive, ref, watch } from 'vue';
 import MultiStepFooter from './step/MultiStepFooter.vue';
@@ -271,5 +272,17 @@ watch(
         @submit="$event.target.closest('form')?.submit()"
       />
     </Form>
+
+    <div class="mt-4 text-center">
+      <div class="text-sm text-muted-foreground">
+        Already have an account?
+        <Link
+          :href="login()"
+          class="text-auth-blue underline underline-offset-4"
+        >
+          Log in
+        </Link>
+      </div>
+    </div>
   </AuthBase>
 </template>
