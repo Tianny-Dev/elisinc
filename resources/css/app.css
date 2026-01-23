@@ -10,6 +10,10 @@
 @theme inline {
   --font-sans: Arial, ui-sans-serif, system-ui, sans-serif;
 
+  --font-noto: 'Noto Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --color-dark-green: #216345;
+  --color-bright-green: #00A550;
+
   --color-brand-red: #cd2e3a;
   --color-brand-blue: #0047a0;
   --color-brand-white: #f0f8ff;
