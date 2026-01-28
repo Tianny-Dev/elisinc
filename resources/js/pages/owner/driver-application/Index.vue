@@ -407,7 +407,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Front License</p>
                 <a
                   :href="selectedDriver.details.front_license_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -423,7 +423,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Back License</p>
                 <a
                   :href="selectedDriver.details.back_license_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -439,7 +439,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">NBI Clearance</p>
                 <a
                   :href="selectedDriver.details.nbi_clearance"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -455,7 +455,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Selfie</p>
                 <a
                   :href="selectedDriver.details.selfie_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -527,7 +527,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Front License</p>
                 <a
                   :href="driverToToggle.details.front_license_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -544,7 +544,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Back License</p>
                 <a
                   :href="driverToToggle.details.back_license_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -560,7 +560,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">NBI Clearance</p>
                 <a
                   :href="driverToToggle.details.nbi_clearance"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >
@@ -577,7 +577,7 @@ const toggleStatus = (id: number, action: 'approve' | 'deny') => {
                 <p class="text-xs text-gray-500">Selfie</p>
                 <a
                   :href="driverToToggle.details.selfie_picture"
-                  class="text-xs text-blue-500"
+                  class="text-xs text-emerald-500 hover:underline"
                   target="_blank"
                   >View</a
                 >

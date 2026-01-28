@@ -146,7 +146,7 @@ function dismissNotification(id: number) {
             :class="{
               'border-l-4 border-red-500 bg-red-50/60 dark:bg-red-950/20':
                 notif.type === 'alert',
-              'border-l-4 border-blue-500 bg-blue-50/60 dark:bg-blue-950/20':
+              'border-l-4 border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/20':
                 notif.type === 'reminder',
             }"
           >
@@ -157,7 +157,7 @@ function dismissNotification(id: number) {
                 :class="
                   notif.type === 'alert'
                     ? 'text-red-700 dark:text-red-400'
-                    : 'text-blue-700 dark:text-blue-400'
+                    : 'text-emerald-700 dark:text-emerald-400'
                 "
               >
                 {{ notif.title }}

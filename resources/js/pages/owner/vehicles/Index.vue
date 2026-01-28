@@ -495,7 +495,7 @@ const goToPage = (url: string | null) => {
                     <a
                       :href="editingVehicle.or_cr"
                       target="_blank"
-                      class="flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline"
+                      class="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:underline"
                     >
                       <span>(Current View)</span>
                     </a>

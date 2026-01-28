@@ -687,7 +687,7 @@ const removeDriverFromFranchise = () => {
                   <div class="flex gap-2">
                     <button
                       @click="triggerFileEdit(field)"
-                      class="text-[10px] font-bold text-blue-600 hover:underline"
+                      class="text-[10px] font-bold text-emerald-600 hover:underline"
                     >
                       Edit
                     </button>
