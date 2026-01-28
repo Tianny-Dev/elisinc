@@ -2,12 +2,11 @@
 import LeafletMap, { type MarkerData } from '@/components/LeafletMap.vue';
 import MultiSelect from '@/components/MultiSelect.vue';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/AppLayout.vue';
 import superAdmin from '@/routes/super-admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 // --- Define Props ---
 const props = defineProps<{
@@ -35,8 +34,7 @@ const selectedFranchise = ref<string[]>(props.filters.franchise || []);
 const selectedDriver = ref<string[]>(props.filters.driver || []);
 
 const selectedContext = computed({
-  get: () =>
-    selectedFranchise.value,
+  get: () => selectedFranchise.value,
   set: (val: string[]) => {
     selectedFranchise.value = val;
     selectedDriver.value = [];
@@ -132,34 +130,49 @@ const updateFilters = () => {
 </script>
 
 <template>
-
   <Head title="Gps Monitoring" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-      <div class="relative rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border">
+    <div
+      class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
+    >
+      <div
+        class="relative rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border"
+      >
         <div class="mb-4 flex items-center justify-between">
-          <h2 class="font-mono text-xl font-semibold">
-            Franchise Monitoring
-          </h2>
+          <h2 class="font-mono text-xl font-semibold">Franchise Monitoring</h2>
 
           <div class="flex gap-4">
-            <MultiSelect v-model="selectedDriver" :options="driverOptions" placeholder="Select Drivers"
-              all-label="All Drivers" @change="updateFilters" />
+            <MultiSelect
+              v-model="selectedDriver"
+              :options="driverOptions"
+              placeholder="Select Drivers"
+              all-label="All Drivers"
+              @change="updateFilters"
+            />
 
-            <MultiSelect v-model="selectedContext" :options="contextOptions" placeholder="Select Franchises" all-label="
+            <MultiSelect
+              v-model="selectedContext"
+              :options="contextOptions"
+              placeholder="Select Franchises"
+              all-label="
                 All Franchises
-              " @change="
+              "
+              @change="
                 (val) => {
                   selectedFranchise = val;
                   updateFilters();
                 }
-              " />
+              "
+            />
           </div>
         </div>
 
         <div class="w-full rounded-lg border shadow-sm">
-          <LeafletMap :locations="props.mapMarkers.data" :fit-bounds="props.mapMarkers.data.length > 0">
+          <LeafletMap
+            :locations="props.mapMarkers.data"
+            :fit-bounds="props.mapMarkers.data.length > 0"
+          >
             <template #popup="{ item }">
               <div class="min-w-[150px] space-y-2 p-1">
                 <div class="border-b pb-1">
@@ -171,21 +184,26 @@ const updateFilters = () => {
                   <h3 class="font-bold text-gray-900">
                     {{ item.username }}
                   </h3>
-                  <Badge :class="[
-                    item.isOnline
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700',
-                  ]">
+                  <Badge
+                    :class="[
+                      item.isOnline
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700',
+                    ]"
+                  >
                     {{ item.isOnline ? 'Online' : 'Offline' }}
                   </Badge>
                 </div>
                 <div v-if="!item.isOnline">
-                  <span class="font-mono text-xs text-rose-600">driver last seen is here</span>
+                  <span class="font-mono text-xs text-rose-600"
+                    >driver last seen is here</span
+                  >
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="font-semibold text-gray-600">Plate No:</span>
                   <span
-                    class="inline-block rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm font-semibold text-blue-700">
+                    class="inline-block rounded bg-emerald-100 px-1.5 py-0.5 font-mono text-sm font-semibold text-emerald-700"
+                  >
                     {{ item.plate_number }}
                   </span>
                 </div>

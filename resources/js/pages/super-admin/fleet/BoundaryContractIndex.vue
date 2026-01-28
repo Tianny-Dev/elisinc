@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import DataTable from '@/components/DataTable.vue';
+import MultiSelect from '@/components/MultiSelect.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import MultiSelect from '@/components/MultiSelect.vue';
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDetailsModal } from '@/composables/useDetailsModal';
 import AppLayout from '@/layouts/AppLayout.vue';
 import superAdmin from '@/routes/super-admin';
@@ -77,8 +76,7 @@ const selectedFranchise = ref<string[]>(props.filters.franchise || []);
 const selectedStatus = ref(props.filters.status || 'active');
 
 const selectedContext = computed({
-  get: () =>
-    selectedFranchise.value,
+  get: () => selectedFranchise.value,
   set: (val: string[]) => {
     selectedFranchise.value = val;
   },
@@ -86,8 +84,7 @@ const selectedContext = computed({
 
 // Mapping options for the MultiSelect
 const contextOptions = computed(() => {
-  const data =
-    props.franchises;
+  const data = props.franchises;
   return data.map((item) => ({ id: item.id, label: item.name }));
 });
 
@@ -162,7 +159,7 @@ const contractColumns = computed<ColumnDef<ContractRow>[]>(() => {
     },
     {
       accessorKey: 'franchise_name',
-      header: 'Franchise'
+      header: 'Franchise',
     },
     {
       accessorKey: 'amount',
@@ -187,7 +184,7 @@ const contractColumns = computed<ColumnDef<ContractRow>[]>(() => {
       cell: ({ row }) => {
         const status = row.getValue('status_name') as string;
         const badgeClass = {
-          'bg-blue-500 hover:bg-blue-600': status === 'active',
+          'bg-emerald-500 hover:bg-emerald-600': status === 'active',
           'bg-rose-500 hover:bg-rose-600':
             status === 'terminated' || status === 'expired',
           'bg-amber-500 hover:bg-amber-600': status === 'pending',
@@ -262,16 +259,17 @@ watch(
 </script>
 
 <template>
-
   <Head title="Boundary Contract" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-      <div class="relative rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border">
+    <div
+      class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
+    >
+      <div
+        class="relative rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border"
+      >
         <div class="mb-4 flex items-center justify-between">
-          <h2 class="font-mono text-xl font-semibold">
-            Franchise Contracts
-          </h2>
+          <h2 class="font-mono text-xl font-semibold">Franchise Contracts</h2>
 
           <div class="flex gap-4">
             <Select v-model="selectedStatus">
@@ -286,18 +284,28 @@ watch(
               </SelectContent>
             </Select>
 
-            <MultiSelect v-model="selectedContext" :options="contextOptions" placeholder="
+            <MultiSelect
+              v-model="selectedContext"
+              :options="contextOptions"
+              placeholder="
                 Select Franchises
-              " all-label="All Franchises" @change="
+              "
+              all-label="All Franchises"
+              @change="
                 (val) => {
                   selectedFranchise = val;
                   updateFilters();
                 }
-              " />
+              "
+            />
           </div>
         </div>
 
-        <DataTable :columns="contractColumns" :data="contracts.data" search-placeholder="Search contracts...">
+        <DataTable
+          :columns="contractColumns"
+          :data="contracts.data"
+          search-placeholder="Search contracts..."
+        >
           <template #custom-actions>
             <Button class="me-5" @click="createContract">
               <PlusIcon />Add Contract
@@ -313,14 +321,20 @@ watch(
           <DialogTitle>Contract Details</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          <div v-if="contractModal.isLoading.value" class="grid grid-cols-2 gap-4">
+          <div
+            v-if="contractModal.isLoading.value"
+            class="grid grid-cols-2 gap-4"
+          >
             <template v-for="item in 10" :key="item">
               <Skeleton class="h-5 w-24" />
               <Skeleton class="h-5 w-3/4" />
             </template>
           </div>
 
-          <div v-else-if="contractDetails.length > 0" class="grid grid-cols-2 gap-4">
+          <div
+            v-else-if="contractDetails.length > 0"
+            class="grid grid-cols-2 gap-4"
+          >
             <template v-for="item in contractDetails" :key="item.label">
               <div class="font-medium">{{ item.label }}:</div>
               <div>
@@ -330,7 +344,10 @@ watch(
           </div>
 
           <div v-else-if="contractModal.isError.value">
-            <Alert variant="destructive" class="border-2 border-red-500 shadow-lg">
+            <Alert
+              variant="destructive"
+              class="border-2 border-red-500 shadow-lg"
+            >
               <AlertCircleIcon class="h-4 w-4" />
               <AlertTitle class="font-bold">Error</AlertTitle>
               <AlertDescription class="font-semibold">

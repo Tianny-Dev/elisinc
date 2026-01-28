@@ -157,7 +157,7 @@ const submitForm = () => {
               class="h-8 w-8"
               @click="openEditModal(item)"
             >
-              <Pencil class="h-6 w-6 text-blue-600" />
+              <Pencil class="h-6 w-6 text-emerald-600" />
             </Button>
           </CardFooter>
         </Card>

@@ -261,7 +261,7 @@ const updateFilters = () => {
               <a
                 :href="item.value"
                 target="_blank"
-                class="text-blue-500 hover:underline"
+                class="text-emerald-500 hover:underline"
                 >View</a
               >
             </div>

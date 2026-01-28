@@ -237,7 +237,7 @@ const openDeleteModal = (vehicle: VehicleRow) => {
 };
 
 const confirmDelete = () => {
-  if (!selectedVehicle.value) return
+  if (!selectedVehicle.value) return;
   isDeletingVehicle.value = true;
 
   router.delete(superAdmin.vehicle.destroy(selectedVehicle.value.id).url, {
@@ -253,7 +253,7 @@ const confirmDelete = () => {
       isDeletingVehicle.value = false;
     },
   });
-}
+};
 
 const statuses = [
   { value: 'active', label: 'Active' },
@@ -286,7 +286,7 @@ const vehicleColumns = computed<ColumnDef<VehicleRow>[]>(() => {
       cell: ({ row }) => {
         const status = row.getValue('status_name') as string;
         const badgeClass = {
-          'bg-blue-500 hover:bg-blue-600': status === 'active',
+          'bg-emerald-500 hover:bg-emerald-600': status === 'active',
           'bg-rose-500 hover:bg-rose-600': status === 'maintenance',
           'bg-green-500 hover:bg-green-600': status === 'available',
         };
@@ -340,7 +340,8 @@ const vehicleColumns = computed<ColumnDef<VehicleRow>[]>(() => {
                 h(
                   DropdownMenuItem,
                   {
-                    class: 'cursor-pointer text-blue-500 focus:text-blue-600',
+                    class:
+                      'cursor-pointer text-emerald-500 focus:text-emerald-600',
                     onClick: () => openChangeModal(vehicle),
                   },
                   () => 'Change Status',
@@ -573,7 +574,7 @@ watch(
               <a
                 :href="item.value"
                 target="_blank"
-                class="flex items-center gap-1 text-blue-500 hover:underline"
+                class="flex items-center gap-1 text-emerald-500 hover:underline"
                 >View Document</a
               >
             </div>
@@ -636,7 +637,7 @@ watch(
         <DialogTitle class="text-xl">Change Driver Status</DialogTitle>
         <DialogDescription>
           Change the status of this vehicle plate number
-          <strong class="text-blue-500">{{
+          <strong class="text-emerald-500">{{
             selectedVehicle?.plate_number
           }}</strong
           >. From {{ selectedVehicle?.status_name }} to
@@ -686,8 +687,8 @@ watch(
         <DialogDescription>
           Are you sure you want to delete vehicle with plate no.
           <span class="font-semibold">
-            {{ selectedVehicle?.plate_number }}
-          </span>?
+            {{ selectedVehicle?.plate_number }} </span
+          >?
           <br />
           This action cannot be undone.
         </DialogDescription>

@@ -3,7 +3,6 @@ import DataTable from '@/components/DataTable.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
@@ -476,7 +475,7 @@ const franchiseColumns: ColumnDef<FranchiseRow>[] = [
             href: contract,
             target: '_blank',
             rel: 'noopener',
-            class: 'text-blue-500 hover:underline',
+            class: 'text-emerald-500 hover:underline',
           },
           'View Contract',
         ),
@@ -489,7 +488,7 @@ const franchiseColumns: ColumnDef<FranchiseRow>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status_name') as string;
       const badgeClass = {
-        'bg-blue-500 hover:bg-blue-600': status === 'active',
+        'bg-emerald-500 hover:bg-emerald-600': status === 'active',
         'bg-amber-500 hover:bg-amber-600': status === 'pending',
       };
       return h('div', { class: 'text-center' }, [
@@ -538,7 +537,8 @@ const franchiseColumns: ColumnDef<FranchiseRow>[] = [
                   h(
                     DropdownMenuItem,
                     {
-                      class: 'cursor-pointer text-blue-500 focus:text-blue-600',
+                      class:
+                        'cursor-pointer text-emerald-500 focus:text-emerald-600',
                       onClick: () => openAcceptModal(franchise),
                     },
                     () => 'Accept Franchise',
@@ -552,7 +552,8 @@ const franchiseColumns: ColumnDef<FranchiseRow>[] = [
                   h(
                     DropdownMenuItem,
                     {
-                      class: 'cursor-pointer text-blue-500 focus:text-blue-600',
+                      class:
+                        'cursor-pointer text-emerald-500 focus:text-emerald-600',
                       onClick: () => openUploadContractModal(franchise),
                     },
                     () => 'Upload Contract',
@@ -701,7 +702,7 @@ const filteredFranchises = computed(() => {
         <DialogTitle class="text-2xl">Accept Franchise?</DialogTitle>
         <DialogDescription class="text-md font-semibold">
           Are you sure you want to accept the franchise
-          <strong class="text-blue-500">{{ selectedFranchise.name }}</strong
+          <strong class="text-emerald-500">{{ selectedFranchise.name }}</strong
           >? This will also activate the owner's account.
         </DialogDescription>
       </DialogHeader>
@@ -793,7 +794,6 @@ const filteredFranchises = computed(() => {
       </DialogContent>
     </Dialog> -->
 
-
   <Dialog v-model:open="franchiseModal.isOpen.value">
     <DialogContent class="max-w-2xl overflow-y-auto">
       <DialogHeader>
@@ -821,7 +821,7 @@ const filteredFranchises = computed(() => {
               <a
                 :href="item.value"
                 target="_blank"
-                class="text-blue-500 hover:underline"
+                class="text-emerald-500 hover:underline"
                 >View</a
               >
             </div>
@@ -882,7 +882,7 @@ const filteredFranchises = computed(() => {
               <a
                 :href="item.value"
                 target="_blank"
-                class="text-blue-500 hover:underline"
+                class="text-emerald-500 hover:underline"
                 >View</a
               >
             </div>
