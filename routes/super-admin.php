@@ -16,6 +16,7 @@ use App\Http\Controllers\SuperAdmin\OwnerController;
 use App\Http\Controllers\SuperAdmin\RevenueController;
 use App\Http\Controllers\SuperAdmin\TransactionController;
 use App\Http\Controllers\SuperAdmin\VehicleController;
+use App\Http\Controllers\SuperAdmin\VehicleTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', 'user_type:super_admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
@@ -87,4 +88,7 @@ Route::middleware(['auth', 'verified', 'user_type:super_admin'])->prefix('super-
 
     Route::resource('feedbacks', FeedbackManagementController::class);
     Route::patch('/feedback/{id}/toggle', [FeedbackManagementController::class, 'toggleActive']);
+
+    // Vehicle Type
+    Route::resource('vehicle-type', VehicleTypeController::class);
 });
