@@ -109,4 +109,9 @@ class Franchise extends Model
     {
         return $this->hasMany(SupportTicket::class);
     }
+
+    public function VehicleTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(VehicleType::class);
+    }
 }

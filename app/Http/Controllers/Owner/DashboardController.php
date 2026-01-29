@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\BoundaryContract;
 use App\Models\Expense;
 use App\Models\Revenue;
+use App\Models\Status;
 use App\Models\UserDriver;
 use App\Models\UserTechnician;
 use App\Models\Vehicle;
+use App\Models\VehicleType;
 use Inertia\Inertia;
 use Carbon\Carbon;
 
@@ -52,6 +54,8 @@ class DashboardController extends Controller
 
 
             'netProfitData' => $this->getNetProfitData($franchiseId, $year, 7),
+
+            'vehicleTypes' => $this->getVehicleTypesData($franchise),
         ]);
     }
 
@@ -177,5 +181,47 @@ class DashboardController extends Controller
                     - Expense::where('franchise_id', $franchiseId)->whereYear('payment_date', $year)->sum('amount'),
             ])
             ->toArray();
+    }
+
+    protected function getVehicleTypesData($franchise): array
+    {
+        if (!$franchise) return [];
+
+        $allVehicleTypes = VehicleType::all();
+
+        $assignedVehicleTypes = $franchise->vehicleTypes()
+            ->withPivot('status_id')
+            ->get();
+
+        $assignedMap = $assignedVehicleTypes->keyBy('id');
+
+        return $allVehicleTypes->map(function ($vehicleType) use ($assignedMap) {
+            $hasRecord = $assignedMap->has($vehicleType->id);
+
+            if ($hasRecord) {
+                $assigned = $assignedMap[$vehicleType->id];
+                $status = Status::find($assigned->pivot->status_id);
+
+                return [
+                    'id' => $vehicleType->id,
+                    'name' => $vehicleType->name,
+                    'is_assigned' => true,
+                    'status' => [
+                        'id' => $status->id,
+                        'name' => $status->name, 
+                    ],
+                ];
+            } else {
+                return [
+                    'id' => $vehicleType->id,
+                    'name' => $vehicleType->name,
+                    'is_assigned' => false,
+                    'status' => [
+                        'id' => null,
+                        'name' => 'locked', 
+                    ],
+                ];
+            }
+        })->toArray();
     }
 }

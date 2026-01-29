@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\VehicleType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class VehicleTypeSeeder extends Seeder
 {
@@ -13,22 +13,14 @@ class VehicleTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('vehicle_types')->insert([
-            [
-                'name'       => 'Taxi Car',
-                'updated_at' => now(),
-                'created_at' => now(),
-            ],
-            [
-                'name'       => 'Bus',
-                'updated_at' => now(),
-                'created_at' => now(),
-            ],
-            [
-                'name'       => 'Tricycle',
-                'updated_at' => now(),
-                'created_at' => now(),
-            ],
-        ]);
+        $vehicleTypes = [
+            ['name' => 'Taxi Car'],
+            ['name' => 'Bus'],
+            ['name' => 'Tricycle'],
+        ];
+
+        foreach ($vehicleTypes as $type) {
+            VehicleType::create($type);
+        }
     }
 }

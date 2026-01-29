@@ -101,6 +101,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PercentageTypeSeeder::class);
         $this->call(VehicleTypeSeeder::class);
+        $this->call(VehicleTypeFranchiseSeeder::class);
         $this->call(RevenueBreakdownSeeder::class);
 
         $this->call(InventorySeeder::class);

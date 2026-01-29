@@ -34,16 +34,47 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+    // public function share(Request $request): array
+    // {
+    //     [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+
+    //     return [
+    //         ...parent::share($request),
+    //         'name' => config('app.name'),
+    //         'quote' => ['message' => trim($message), 'author' => trim($author)],
+    //         'auth' => [
+    //             'user' => $request->user(),
+    //         ],
+    //         'flash' => [
+    //             'success' => fn () => $request->session()->get('success'),
+    //             'error'   => fn () => $request->session()->get('error'),
+    //         ],
+    //         'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+    //     ];
+    // }
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+
+        $user = $request->user();
+        $hasActiveVehicleType = false;
+
+        if ($user && $user->user_type_id === 2) {
+            $franchise = $user->ownerDetails?->franchises()->first();
+            if ($franchise) {
+                $hasActiveVehicleType = $franchise->vehicleTypes()
+                    ->where('status_id', 1)
+                    ->exists();
+            }
+        }
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'hasActiveVehicleType' => $hasActiveVehicleType,
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
