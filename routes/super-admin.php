@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionVerificationController;
+use App\Http\Controllers\SuperAdmin\AccreditationController;
 use App\Http\Controllers\SuperAdmin\AllocationController;
 use App\Http\Controllers\SuperAdmin\BoundaryContractController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
@@ -91,4 +92,6 @@ Route::middleware(['auth', 'verified', 'user_type:super_admin'])->prefix('super-
 
     // Vehicle Type
     Route::resource('vehicle-type', VehicleTypeController::class);
+
+    Route::get('/accreditation', [AccreditationController::class, 'index'])->name('accreditation.index');
 });
