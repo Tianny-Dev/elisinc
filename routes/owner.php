@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Owner\BoundaryContractController;
+use App\Http\Controllers\Owner\BusStationController;
 use App\Http\Controllers\Owner\FranchiseController;
 use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\Owner\DetailsDriverController;
@@ -43,6 +44,11 @@ Route::middleware(['auth', 'verified', 'user_type:owner', 'check.active'])->pref
 
     Route::put('/drivers/{id}/status', [DriverManagementController::class, 'updateStatus'])
     ->name('drivers.updateStatus');
+
+    // station bus
+    Route::get('bus-station', [BusStationController::class, 'index'])->name('busstationmanagement');
+    Route::post('bus-station', [BusStationController::class, 'store'])->name('busstationmanagement.store');
+    Route::put('bus-station/{busStation}', [BusStationController::class, 'update'])->name('busstationmanagement.update');
 
     // export for driver
     Route::get('/earning', [ReportDriverController::class, 'index'])->name('driverownerreport');

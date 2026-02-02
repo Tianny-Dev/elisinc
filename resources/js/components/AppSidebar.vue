@@ -22,6 +22,7 @@ import {
   Banknote,
   BanknoteArrowDown,
   Box,
+  Bus,
   BusFront,
   Car,
   CarTaxiFront,
@@ -313,6 +314,12 @@ const navConfig: Record<string, NavItem[]> = {
       icon: FileText,
       group: 'Management',
       requiresActive: true,
+    },
+    {
+      title: 'Bus Station Management',
+      href: owner.busstationmanagement(),
+      icon: Bus,
+      group: 'Management',
     },
     // {
     //   title: 'Suspend Drivers',
