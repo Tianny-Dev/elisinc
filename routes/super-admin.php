@@ -15,6 +15,7 @@ use App\Http\Controllers\SuperAdmin\GpsTrackerController;
 use App\Http\Controllers\SuperAdmin\InventoryController;
 use App\Http\Controllers\SuperAdmin\OwnerController;
 use App\Http\Controllers\SuperAdmin\RevenueController;
+use App\Http\Controllers\SuperAdmin\StationManagementController;
 use App\Http\Controllers\SuperAdmin\TransactionController;
 use App\Http\Controllers\SuperAdmin\VehicleController;
 use App\Http\Controllers\SuperAdmin\VehicleTypeController;
@@ -96,4 +97,8 @@ Route::middleware(['auth', 'verified', 'user_type:super_admin'])->prefix('super-
     Route::get('/accreditation', [AccreditationController::class, 'index'])->name('accreditation.index');
     Route::post('/accreditation/approve', [AccreditationController::class, 'approve'])->name('accreditation.approve');
     Route::post('/accreditation/decline', [AccreditationController::class, 'decline'])->name('accreditation.decline');
+
+    Route::get('/station-management', [StationManagementController::class, 'index'])->name('stationManagement.index');
+    Route::post('/station-management/approve', [StationManagementController::class, 'approve'])->name('stationManagement.approve');
+    Route::post('/station-management/decline', [StationManagementController::class, 'decline'])->name('stationManagement.decline');
 });

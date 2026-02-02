@@ -100,6 +100,12 @@ const navConfig: Record<string, NavItem[]> = {
       group: 'Fleet',
     },
     {
+      title: 'Station Management',
+      href: superAdmin.stationManagement.index(),
+      icon: Bus,
+      group: 'Fleet',
+    },
+    {
       title: 'Inventory Management',
       href: superAdmin.inventory.index(),
       icon: Box,
