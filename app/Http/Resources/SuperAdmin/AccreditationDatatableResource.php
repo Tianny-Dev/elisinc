@@ -7,22 +7,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AccreditationDatatableResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'name' => $this->name, // Now this shows "Taxi Car", "Bus", etc.
-            // Map the franchises that are linked to this type via the seeder
+            'name' => $this->name, 
+
             'accredited_types' => $this->franchises->map(function ($franchise) {
                 return [
-                    'type_name' => $franchise->name, // Shows the Franchise Name in the badge
-                    'status_id' => $franchise->pivot->status_id,
-                    'status_label' => $franchise->pivot->status_id == 1 ? 'Active' : 'Pending',
+                    'type_name' => $franchise->name,
+                    'status_id' => (int) $franchise->pivot->status_id,
+                    'status_label' => match ((int) $franchise->pivot->status_id) {
+                        1 => 'Active',
+                        6 => 'Pending',
+                        default => 'Deny',
+                    },
                 ];
             }),
         ];

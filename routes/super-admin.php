@@ -94,4 +94,6 @@ Route::middleware(['auth', 'verified', 'user_type:super_admin'])->prefix('super-
     Route::resource('vehicle-type', VehicleTypeController::class);
 
     Route::get('/accreditation', [AccreditationController::class, 'index'])->name('accreditation.index');
+    Route::post('/accreditation/approve', [AccreditationController::class, 'approve'])->name('accreditation.approve');
+    Route::post('/accreditation/decline', [AccreditationController::class, 'decline'])->name('accreditation.decline');
 });
