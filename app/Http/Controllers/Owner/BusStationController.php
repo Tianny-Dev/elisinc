@@ -14,7 +14,8 @@ class BusStationController extends Controller
 {
     public function index(): Response
     {
-        $franchiseId = 1;
+        $franchise = $this->getFranchiseOrDefault();
+        $franchiseId = $franchise?->id;
 
         $stations = BusStation::where('franchise_id', $franchiseId)
             ->with(['toAmounts' => function($query) {
@@ -27,8 +28,9 @@ class BusStationController extends Controller
                     'id' => $station->id,
                     'name' => $station->name,
                     'code_no' => $station->code_no,
-                    'lat' => $station->latitude,
-                    'lng' => $station->longitude,
+                    'lat' => (string)$station->latitude,
+                    'lng' => (string)$station->longitude,
+                    'status_id' => $station->status_id,
                     'amount' => $station->toAmounts->first()?->amount ?? 0,
                 ];
             });
@@ -37,6 +39,11 @@ class BusStationController extends Controller
             'stations' => $stations,
             'franchise_id' => $franchiseId
         ]);
+    }
+
+    protected function getFranchiseOrDefault()
+    {
+        return auth()->user()->ownerDetails?->franchises()->first();
     }
 
     public function store(Request $request)
@@ -54,16 +61,16 @@ class BusStationController extends Controller
 
         $station = BusStation::create([
             'franchise_id' => $validated['franchise_id'],
-            'status_id' => 1,
+            'status_id' => 6,
             'name' => $validated['name'],
             'code_no' => $validated['code_no'],
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
         ]);
 
-        if ($request->previous_station_id) {
+        if ($validated['previous_station_id']) {
             StationAmount::create([
-                'first_bus_station_id' => $request->previous_station_id,
+                'first_bus_station_id' => $validated['previous_station_id'],
                 'second_bus_station_id' => $station->id,
                 'amount' => $validated['amount'],
             ]);
@@ -82,15 +89,20 @@ class BusStationController extends Controller
             'amount' => 'required|numeric|min:0',
         ]);
 
+        $newStatus = $busStation->status_id == 1 ? 1 : 6;
+
         $busStation->update([
             'name' => $validated['name'],
             'code_no' => $validated['code_no'],
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
+            'status_id' => $newStatus,
         ]);
 
-        StationAmount::where('second_bus_station_id', $busStation->id)
-            ->update(['amount' => $validated['amount']]);
+        $hasPrevious = StationAmount::where('second_bus_station_id', $busStation->id)->first();
+        if ($hasPrevious) {
+            $hasPrevious->update(['amount' => $validated['amount']]);
+        }
 
         return redirect()->back();
     }
