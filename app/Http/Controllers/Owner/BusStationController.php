@@ -8,37 +8,49 @@ use App\Models\StationAmount;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Auth;
 
 class BusStationController extends Controller
 {
-    public function index(): Response
+
+
+   public function index(): Response | \Illuminate\Http\RedirectResponse
     {
         $franchise = $this->getFranchiseOrDefault();
         $franchiseId = $franchise?->id;
 
-        $stations = BusStation::where('franchise_id', $franchiseId)
-            ->with(['toAmounts' => function($query) {
-                $query->select('second_bus_station_id', 'amount');
-            }])
-            ->orderBy('id', 'asc')
-            ->get()
-            ->map(function ($station) {
-                return [
-                    'id' => $station->id,
-                    'name' => $station->name,
-                    'code_no' => $station->code_no,
-                    'lat' => (string)$station->latitude,
-                    'lng' => (string)$station->longitude,
-                    'status_id' => $station->status_id,
-                    'amount' => $station->toAmounts->first()?->amount ?? 0,
-                ];
-            });
+        // Check if the franchise is active for Bus (Type 2)
+        $hasAccess = $franchiseId && \DB::table('franchise_vehicle_type')
+            ->where('franchise_id', $franchiseId)
+            ->where('vehicle_type_id', 2)
+            ->where('status_id', 1)
+            ->exists();
 
-        return Inertia::render('owner/bus-station/Index', [
-            'stations' => $stations,
-            'franchise_id' => $franchiseId
-        ]);
+        if ($hasAccess) {
+            $stations = BusStation::where('franchise_id', $franchiseId)
+                ->with(['toAmounts' => function($query) {
+                    $query->select('second_bus_station_id', 'amount');
+                }])
+                ->orderBy('id', 'asc')
+                ->get()
+                ->map(function ($station) {
+                    return [
+                        'id' => $station->id,
+                        'name' => $station->name,
+                        'code_no' => $station->code_no,
+                        'lat' => (string)$station->latitude,
+                        'lng' => (string)$station->longitude,
+                        'status_id' => $station->status_id,
+                        'amount' => $station->toAmounts->first()?->amount ?? 0,
+                    ];
+                });
+
+            return Inertia::render('owner/bus-station/Index', [
+                'stations' => $stations,
+                'franchise_id' => $franchiseId
+            ]);
+        }
+
+        return redirect()->route('owner.dashboard')->with('error', 'Bus Station access is disabled.');
     }
 
     protected function getFranchiseOrDefault()
@@ -51,7 +63,6 @@ class BusStationController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:bus_stations,name',
             'code_no' => 'required|unique:bus_stations,code_no',
-            // Latitude max is 90, Longitude max is 180
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'amount' => 'required|numeric|min:0',
@@ -68,6 +79,7 @@ class BusStationController extends Controller
             'longitude' => $validated['longitude'],
         ]);
 
+        // Only create fare amount if there is a sequence (Station B, C, etc.)
         if ($validated['previous_station_id']) {
             StationAmount::create([
                 'first_bus_station_id' => $validated['previous_station_id'],
@@ -96,7 +108,7 @@ class BusStationController extends Controller
             'code_no' => $validated['code_no'],
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
-            'status_id' => $newStatus,
+            'status_id' => $newStatus, // Reset to Pending
         ]);
 
         $hasPrevious = StationAmount::where('second_bus_station_id', $busStation->id)->first();

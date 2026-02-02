@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -18,20 +19,20 @@ import superAdmin from '@/routes/super-admin';
 import technician from '@/routes/technician';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import {
   Banknote,
   BanknoteArrowDown,
   Box,
-  Bus,
-  BusFront,
-  Car,
   CarTaxiFront,
+  Car,
   ChartNoAxesCombined,
   DollarSign,
   FileSpreadsheet,
   FileText,
-  FileUser,
+  Bus,
   HandCoins,
+  BusFront,
   HelpCircle,
   History,
   LayoutGrid,
@@ -40,8 +41,8 @@ import {
   Ticket,
   Users,
   Wrench,
+  FileUser,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 import NavMain from './NavMain.vue';
 
@@ -49,11 +50,9 @@ import NavMain from './NavMain.vue';
 const page = usePage();
 const user = page.props.auth.user;
 // const userFranchise = user.owner?.franchises?.[0];
-
 const hasActiveVehicleType = computed(
   () => page.props.auth.hasActiveVehicleType,
 );
-
 // 🧭 2. Map user_type_id to role name
 const typeMap: Record<number, string> = {
   1: 'super_admin',
@@ -93,6 +92,7 @@ const navConfig: Record<string, NavItem[]> = {
       icon: CarTaxiFront,
       group: 'Fleet',
     },
+
     {
       title: 'Franchise Accreditation',
       href: superAdmin.accreditation.index(),
@@ -260,18 +260,18 @@ const navConfig: Record<string, NavItem[]> = {
   ],
 
   owner: [
-    {
-      title: 'Dashboard',
-      href: owner.dashboard(),
-      icon: LayoutGrid,
-      group: 'Overview',
-    },
     // {
     //   title: 'Notifications',
     //   href: owner.notifications(),
     //   icon: Bell,
     //   group: 'Overview',
     // },
+    {
+      title: 'Dashboard',
+      href: owner.dashboard(),
+      icon: LayoutGrid,
+      group: 'Overview',
+    },
 
     {
       title: 'Payout',
@@ -302,6 +302,7 @@ const navConfig: Record<string, NavItem[]> = {
       group: 'Management',
       requiresActive: true,
     },
+
     // {
     //   title: 'Assign Drivers',
     //   href: owner.vehicleDrivers.index(),
@@ -320,6 +321,7 @@ const navConfig: Record<string, NavItem[]> = {
       href: owner.busstationmanagement(),
       icon: Bus,
       group: 'Management',
+      requiresBus: true, // Add this custom flag
     },
     // {
     //   title: 'Suspend Drivers',
@@ -434,15 +436,26 @@ const navConfig: Record<string, NavItem[]> = {
 // 🧩 4. Load the correct nav items for the user
 const allNavItems = computed(() => {
   const items = navConfig[userType] || [];
+  const canAccessBus = (page.props.auth as any).canAccessBus;
 
-  if (userType === 'owner' && !hasActiveVehicleType.value) {
-    return items.map((item) => ({
+  return items.map((item) => {
+    let isDisabled = false;
+
+    // 1. Check existing "requiresActive" logic
+    if (item.requiresActive && !hasActiveVehicleType.value) {
+      isDisabled = true;
+    }
+
+    // 2. Check your new "requiresBus" logic
+    if (item.requiresBus && !canAccessBus) {
+      isDisabled = true;
+    }
+
+    return {
       ...item,
-      disabled: item.requiresActive ? true : false,
-    }));
-  }
-
-  return items;
+      disabled: isDisabled,
+    };
+  });
 });
 </script>
 
